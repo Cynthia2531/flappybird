@@ -12,6 +12,15 @@ class Bird():
         self.gravity = 0.5
     def blit(self):
        self.rect = screen.blit(self.img,(self.x,self.y))
+    def jump(self):
+        self.velocity = -10
+    def move(self):
+        self.velocity = self.velocity + self.gravity
+        self.y = self.y + self.velocity
+    def collides_with(self, pipe):
+        return pipe.rect.colliderect(self.rect)
+            
+
 
         
 
@@ -42,7 +51,7 @@ screen = display.set_mode((800, 600))
 background_image = image.load("bg.png")
 
 #Set up the bird
-bird = Bird(10,250)
+bird = Bird(10,350)
 
 #Set up the pipes
 pipes_info = [(300, 350, "up"), (600, -350, "down"), (800, 350, "up"), (900, -350, "down"), (1200, 350, "up")]
@@ -53,20 +62,45 @@ for x,y,direction in pipes_info:
 
 #GAME TIME
 game_mode = "waiting"
-game_mode = "playing"
-game_mode = "game over"
+#game_mode = "playing"
+#game_mode = "game over"
+bird.move()
+
+
 
 while True:
     screen.blit(background_image,(0,0))
+    new_event = event.poll() 
+    if game_mode == "waiting":
     #Waiting to play
-    
+        if new_event.type == KEYDOWN:
+            print("Start game")
+         
+            game_mode = "playing"
+    elif game_mode == "playing":
+        
+        if new_event.type == KEYDOWN:
+            bird.jump()
+            print("Jump")
     # Moving Objects
-    for pipe in pipe_image:
-        pipe.move()
-    # Game over
+        for pipe in pipe_image:
+            pipe.move()
+
+    elif game_mode == "game over":
+     # Game over
+     
+        print("game over")
+
+
+    
+   
+   
 
     # Show the pics!
     bird.blit()
     for pipe in pipe_image:
         pipe.blit()
+        if bird.collides_with(pipe):
+            game_mode = "game over"
+            print("gameover")
     display.update()
