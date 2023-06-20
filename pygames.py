@@ -1,3 +1,4 @@
+import random
 from pygame import *
 init()
 
@@ -51,7 +52,21 @@ background_image = image.load("bg.png")
 bird = Bird(10,250)
 
 #Set up the pipes
-pipes_info = [(300, 350, "up"), (600, -350, "down"), (800, 350, "up"), (900, -350, "down"), (1200, 350, "up")]
+#pipes_info = [(300, 350, "up"), (600, -350, "down"), (800, 350, "up"), (900, -350, "down"), (1200, 350, "up")]
+pipes_info = []
+pipe_gap = 300
+pipe_last_x = 0
+n = 1000
+for i in range(n):
+    Pipe.x = pipe_last_x + pipe_gap
+    UorD = random.choice(["up", "down"])
+    Ycoord = random.randint(250, 500)
+    if UorD == "down":
+        Ycoord = Ycoord * -1
+        
+    pipe = (Pipe.x, Ycoord, UorD)
+    pipes_info.append(pipe)
+    pipe_last_x = Pipe.x
 pipe_image = []
 for x,y,direction in pipes_info:
     pipe_image.append(Pipe(x,y,direction))
