@@ -19,10 +19,7 @@ class Bird():
         self.y = self.y + self.velocity
     def collides_with(self, pipe):
         return pipe.rect.colliderect(self.rect)
-            
-
-
-        
+             
 
 #Pipes Class
 class Pipe():
@@ -51,7 +48,7 @@ screen = display.set_mode((800, 600))
 background_image = image.load("bg.png")
 
 #Set up the bird
-bird = Bird(10,350)
+bird = Bird(10,250)
 
 #Set up the pipes
 pipes_info = [(300, 350, "up"), (600, -350, "down"), (800, 350, "up"), (900, -350, "down"), (1200, 350, "up")]
@@ -62,11 +59,6 @@ for x,y,direction in pipes_info:
 
 #GAME TIME
 game_mode = "waiting"
-#game_mode = "playing"
-#game_mode = "game over"
-bird.move()
-
-
 
 while True:
     screen.blit(background_image,(0,0))
@@ -75,10 +67,10 @@ while True:
     #Waiting to play
         if new_event.type == KEYDOWN:
             print("Start game")
-         
+
             game_mode = "playing"
     elif game_mode == "playing":
-        
+        bird.move()
         if new_event.type == KEYDOWN:
             bird.jump()
             print("Jump")
@@ -88,13 +80,8 @@ while True:
 
     elif game_mode == "game over":
      # Game over
-     
         print("game over")
-
-
-    
-   
-   
+        break
 
     # Show the pics!
     bird.blit()
@@ -102,5 +89,4 @@ while True:
         pipe.blit()
         if bird.collides_with(pipe):
             game_mode = "game over"
-            print("gameover")
     display.update()
