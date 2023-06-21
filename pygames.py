@@ -1,4 +1,5 @@
 import random
+import time
 from pygame import *
 init()
 
@@ -47,6 +48,7 @@ class Pipe():
 #pygame setup
 screen = display.set_mode((800, 600))
 background_image = image.load("bg.png")
+Game_over = image.load("game_over.jpg")
 
 #Set up the bird
 bird = Bird(10,250)
@@ -88,15 +90,14 @@ while True:
         bird.move()
         if new_event.type == KEYDOWN:
             bird.jump()
-            print("Jump")
     # Moving Objects
         for pipe in pipe_image:
             pipe.move()
 
     elif game_mode == "game over":
      # Game over
-        print("game over")
-        break
+        screen.blit(Game_over,(0,0))
+
 
     # Show the pics!
     bird.blit()
